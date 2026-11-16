@@ -74,20 +74,19 @@ async function cargarSolicitudes(){
 
   let html = "";
 
-  snapshot.forEach((doc) => {
+snapshot.forEach((registro) => {
 
-    const s = doc.data();
+    const s = registro.data();
 
-    html += `
-      <div style="margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;">
-        <strong>${s.persona}</strong><br>
-        Desde: ${s.desde}<br>
-        Hasta: ${s.hasta}<br>
-        Estado: ${s.estado}
-      </div>
-    `;
+    html +=
+      "<div style='margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;'>" +
+      "<strong>" + s.persona + "</strong><br>" +
+      "Desde: " + s.desde + "<br>" +
+      "Hasta: " + s.hasta + "<br>" +
+      "Estado: " + s.estado +
+      "</div>";
 
-  });
+});
 
   document.getElementById("listaSolicitudes").innerHTML =
     html || "No hay solicitudes";
