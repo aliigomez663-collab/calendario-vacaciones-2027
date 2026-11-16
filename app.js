@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 import {
   getFirestore,
   doc,
-  setDoc
+  setDoc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -20,23 +21,45 @@ const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  document.getElementById("resultado").innerHTML =
-    "Firestore conectado";
-
-  document.getElementById("btnTest")
-    .addEventListener("click", guardarPrueba);
+    document.getElementById("btnTest")
+      .addEventListener("click", guardarPrueba);
 
 });
 
 async function guardarPrueba(){
 
+  const persona =
+    document.getElementById("persona").value;
+
+  const desde =
+    document.getElementById("desde").value;
+
+  const hasta =
+    document.getElementById("hasta").value;
+
+  if(!desde || !hasta){
+
+    document.getElementById("resultado").innerHTML =
+      "Selecciona las fechas";
+
+    return;
+  }
+
   await setDoc(
     doc(db, "vacaciones2027", "equipo"),
     {
-      mensaje: "Hola Firebase",
-      fecha: new Date().toISOString()
+      persona: persona,
+      desde: desde,
+      hasta: hasta,
+      estado: "Pendiente",
+      fechaRegistro: new Date().toISOString()
     }
   );
+
+  document.getElementById("resultado").innerHTML =
+    "Vacaciones guardadas correctamente";
+
+}
 
   document.getElementById("resultado").innerHTML =
     "Dato guardado en Firestore";
