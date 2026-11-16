@@ -21,7 +21,7 @@ const db = getFirestore(app);
 document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("resultado").innerHTML =
-    "✅ Firestore conectado";
+    "Firestore conectado";
 
   document.getElementById("btnTest")
     .addEventListener("click", guardarPrueba);
@@ -38,4 +38,7 @@ async function guardarPrueba(){
     }
   );
 
-  document.getElementById("
+  document.getElementById("resultado").innerHTML =
+    "Dato guardado en Firestore";
+
+}
