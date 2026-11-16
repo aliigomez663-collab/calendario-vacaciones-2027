@@ -111,6 +111,7 @@ async function cargarSolicitudes(){
   snapshot.forEach((registro) => {
 
     const s = registro.data();
+    const id = registro.id
 
     const dias = calcularDiasLaborables(
       s.desde,
@@ -126,8 +127,11 @@ async function cargarSolicitudes(){
       "<strong>" + s.persona + "</strong><br>" +
       "Desde: " + s.desde + "<br>" +
       "Hasta: " + s.hasta + "<br>" +
-      "Estado: " + s.estado +
-      "</div>";
+      "Estado: " + s.estado + "<br><br>" +
+"<button>Aprobar</button> " +
+"<button>Rechazar</button> " +
+"<button>Eliminar</button>" +
+"</div>";
 
   });
 
