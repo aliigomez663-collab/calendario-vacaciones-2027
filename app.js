@@ -6,7 +6,8 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -130,7 +131,7 @@ async function cargarSolicitudes(){
       "Desde: " + s.desde + "<br>" +
       "Hasta: " + s.hasta + "<br>" +
       "Estado: " + s.estado + "<br><br>" +
-"<button>Aprobar</button> " +
+"<button onclick='aprobarSolicitud(\"" + id + "\")'>Aprobar</button> " +
 "<button>Rechazar</button> " +
 "<button onclick='eliminarSolicitud(\"" + id + "\")'>Eliminar</button>" +
 "</div>";
@@ -161,6 +162,18 @@ window.eliminarSolicitud = async function(id){
 
   await deleteDoc(
     doc(db, "solicitudes", id)
+  );
+
+  await cargarSolicitudes();
+
+};
+window.aprobarSolicitud = async function(id){
+
+  await updateDoc(
+    doc(db, "solicitudes", id),
+    {
+      estado: "Aprobada"
+    }
   );
 
   await cargarSolicitudes();
