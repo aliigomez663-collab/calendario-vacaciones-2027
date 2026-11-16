@@ -166,8 +166,9 @@ async function cargarSolicitudes(){
     html +=
       "<div style='margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;'>" +
       "<strong>" + s.persona + "</strong><br>" +
-      "Desde: " + s.desde + "<br>" +
-      "Hasta: " + s.hasta + "<br>" +
+     "Desde: " + s.desde + "<br>" +
+"Hasta: " + s.hasta + "<br>" +
+"Días laborables: " + dias + "<br>" +
       "Estado: <strong style='color:" +
 
 (s.estado === "Aprobada"
