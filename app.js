@@ -41,6 +41,8 @@ async function guardarPrueba(){
 
   const hasta =
     document.getElementById("hasta").value;
+  const diasSolicitados =
+  calcularDiasLaborables(desde, hasta);
 
   if(!desde || !hasta){
 
@@ -51,6 +53,42 @@ async function guardarPrueba(){
 
   }
 
+  const snapshot = await getDocs(
+  collection(db, "solicitudes")
+);
+
+let diasConsumidos = 0;
+
+snapshot.forEach((registro) => {
+
+  const s = registro.data();
+
+  if(
+    s.persona === persona &&
+    s.estado !== "Rechazada"
+  ){
+
+    diasConsumidos +=
+      calcularDiasLaborables(
+        s.desde,
+        s.hasta
+      );
+
+  }
+
+});
+
+const diasDisponibles =
+  23 - diasConsumidos;
+
+if(diasSolicitados > diasDisponibles){
+
+  document.getElementById("resultado").innerHTML =
+    "No dispone de días suficientes";
+
+  return;
+
+}
   await addDoc(
     collection(db, "solicitudes"),
     {
@@ -130,7 +168,19 @@ async function cargarSolicitudes(){
       "<strong>" + s.persona + "</strong><br>" +
       "Desde: " + s.desde + "<br>" +
       "Hasta: " + s.hasta + "<br>" +
-      "Estado: " + s.estado + "<br><br>" +
+      "Estado: <strong style='color:" +
+
+(s.estado === "Aprobada"
+ ? "green"
+ : s.estado === "Rechazada"
+ ? "red"
+ : "orange")
+
++ ";'>" +
+
+s.estado +
+
+"</strong>" +
 "<button onclick='aprobarSolicitud(\"" + id + "\")'>Aprobar</button> " +
 "<button onclick='rechazarSolicitud(\"" + id + "\")'>Rechazar</button> " +
 "<button onclick='eliminarSolicitud(\"" + id + "\")'>Eliminar</button>" +
