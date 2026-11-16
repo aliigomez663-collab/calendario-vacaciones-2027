@@ -174,7 +174,6 @@ let rechazadas = 0;
   );
     const id = registro.id
 
-    );
 
     if(saldos[s.persona] !== undefined){
       saldos[s.persona] -= dias;
