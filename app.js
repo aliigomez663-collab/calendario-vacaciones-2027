@@ -132,7 +132,7 @@ async function cargarSolicitudes(){
       "Hasta: " + s.hasta + "<br>" +
       "Estado: " + s.estado + "<br><br>" +
 "<button onclick='aprobarSolicitud(\"" + id + "\")'>Aprobar</button> " +
-"<button>Rechazar</button> " +
+"<button onclick='rechazarSolicitud(\"" + id + "\")'>Rechazar</button> " +
 "<button onclick='eliminarSolicitud(\"" + id + "\")'>Eliminar</button>" +
 "</div>";
 
@@ -173,6 +173,18 @@ window.aprobarSolicitud = async function(id){
     doc(db, "solicitudes", id),
     {
       estado: "Aprobada"
+    }
+  );
+
+  await cargarSolicitudes();
+
+};
+window.rechazarSolicitud = async function(id){
+
+  await updateDoc(
+    doc(db, "solicitudes", id),
+    {
+      estado: "Rechazada"
     }
   );
 
