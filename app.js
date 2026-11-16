@@ -138,6 +138,9 @@ async function cargarSolicitudes(){
 
   let html = "";
 
+  let pendientes = 0;
+let aprobadas = 0;
+let rechazadas = 0;
   let saldos = {
     "Miembro 1": 23,
     "Miembro 2": 23,
@@ -151,12 +154,26 @@ async function cargarSolicitudes(){
 
   snapshot.forEach((registro) => {
 
-    const s = registro.data();
+  const s = registro.data();
+
+  if(s.estado === "Pendiente"){
+    pendientes++;
+  }
+
+  if(s.estado === "Aprobada"){
+    aprobadas++;
+  }
+
+  if(s.estado === "Rechazada"){
+    rechazadas++;
+  }
+
+  const dias = calcularDiasLaborables(
+    s.desde,
+    s.hasta
+  );
     const id = registro.id
 
-    const dias = calcularDiasLaborables(
-      s.desde,
-      s.hasta
     );
 
     if(saldos[s.persona] !== undefined){
@@ -201,6 +218,10 @@ s.estado +
       " días restantes</div>";
 
   }
+document.getElementById("resumen").innerHTML =
+  "Pendientes: " + pendientes +
+  "<br>Aprobadas: " + aprobadas +
+  "<br>Rechazadas: " + rechazadas;
 
   document.getElementById("saldos").innerHTML =
     htmlSaldos;
