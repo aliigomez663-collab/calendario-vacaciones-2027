@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 import {
   getFirestore,
   collection,
-  addDoc
+  addDoc,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -20,8 +21,10 @@ const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    document.getElementById("btnTest")
-      .addEventListener("click", guardarPrueba);
+  document.getElementById("btnTest")
+    .addEventListener("click", guardarPrueba);
+
+  cargarSolicitudes();
 
 });
 
@@ -42,20 +45,51 @@ async function guardarPrueba(){
       "Selecciona las fechas";
 
     return;
+
   }
 
- await addDoc(
-  collection(db, "solicitudes"),
-  {
-    persona: persona,
-    desde: desde,
-    hasta: hasta,
-    estado: "Pendiente",
-    fechaRegistro: new Date().toISOString()
-  }
-);
+  await addDoc(
+    collection(db, "solicitudes"),
+    {
+      persona: persona,
+      desde: desde,
+      hasta: hasta,
+      estado: "Pendiente",
+      fechaRegistro: new Date().toISOString()
+    }
+  );
 
   document.getElementById("resultado").innerHTML =
     "Vacaciones guardadas correctamente";
+
+  await cargarSolicitudes();
+
+}
+
+async function cargarSolicitudes(){
+
+  const snapshot = await getDocs(
+    collection(db, "solicitudes")
+  );
+
+  let html = "";
+
+  snapshot.forEach((doc) => {
+
+    const s = doc.data();
+
+    html += `
+      <div style="margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;">
+        <strong>${s.persona}</strong><br>
+        Desde: ${s.desde}<br>
+        Hasta: ${s.hasta}<br>
+        Estado: ${s.estado}
+      </div>
+    `;
+
+  });
+
+  document.getElementById("listaSolicitudes").innerHTML =
+    html || "No hay solicitudes";
 
 }
