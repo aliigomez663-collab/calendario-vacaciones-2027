@@ -3,8 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 import {
   getFirestore,
   doc,
-  setDoc,
-  getDoc
+  setDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -24,4 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("resultado").innerHTML =
     "✅ Firestore conectado";
 
+  document.getElementById("btnTest")
+    .addEventListener("click", guardarPrueba);
+
 });
+
+async function guardarPrueba(){
+
+  await setDoc(
+    doc(db, "vacaciones2027", "equipo"),
+    {
+      mensaje: "Hola Firebase",
+      fecha: new Date().toISOString()
+    }
+  );
+
+  document.getElementById("
