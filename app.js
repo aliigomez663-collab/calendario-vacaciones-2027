@@ -125,4 +125,4 @@ document.getElementById("saldos").innerHTML =
   "PRUEBA SALDOS";
 
 document.getElementById("listaSolicitudes").innerHTML =
-  html || "No hay solicitudes";
+  "PRUEBA SOLICITUDES";
