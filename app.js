@@ -60,8 +60,3 @@ async function guardarPrueba(){
     "Vacaciones guardadas correctamente";
 
 }
-
-  document.getElementById("resultado").innerHTML =
-    "Dato guardado en Firestore";
-
-}
