@@ -69,26 +69,60 @@ async function guardarPrueba(){
 async function cargarSolicitudes(){
 
   const snapshot = await getDocs(
-    collection(db, "solicitudes")
-  );
+  collection(db, "solicitudes")
+);
 
-  let html = "";
+let html = "";
+
+let saldos = {
+  "Miembro 1": 23,
+  "Miembro 2": 23,
+  "Miembro 3": 23,
+  "Miembro 4": 23,
+  "Miembro 5": 23,
+  "Miembro 6": 23,
+  "Miembro 7": 23,
+  "Miembro 8": 23
+};
 
 snapshot.forEach((registro) => {
 
-    const s = registro.data();
+  const s = registro.data();
 
-    html +=
-      "<div style='margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;'>" +
-      "<strong>" + s.persona + "</strong><br>" +
-      "Desde: " + s.desde + "<br>" +
-      "Hasta: " + s.hasta + "<br>" +
-      "Estado: " + s.estado +
-      "</div>";
+  const dias = calcularDiasLaborables(
+    s.desde,
+    s.hasta
+  );
 
-});
+  if(saldos[s.persona] !== undefined){
+    saldos[s.persona] -= dias;
+  }
 
-  document.getElementById("listaSolicitudes").innerHTML =
-    html || "No hay solicitudes";
+  html +=
+    "<div style='margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;'>" +
+    "<strong>" + s.persona + "</strong><br>" +
+    "Desde: " + s.desde + "<br>" +
+    "Hasta: " + s.hasta + "<br>" +
+    "Estado: " + s.estado +
+    "</div>";
+
+});   // ← ESTA LÍNEA
+
+let htmlSaldos = "";
+
+for(const persona in saldos){
+
+  htmlSaldos +=
+    "<div>" +
+    persona +
+    " → " +
+    saldos[persona] +
+    " días restantes</div>";
 
 }
+
+document.getElementById("saldos").innerHTML =
+  htmlSaldos;
+
+document.getElementById("listaSolicitudes").innerHTML =
+  html || "No hay solicitudes";
