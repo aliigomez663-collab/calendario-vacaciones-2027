@@ -44,16 +44,16 @@ async function guardarPrueba(){
     return;
   }
 
-  await setDoc(
-    doc(db, "vacaciones2027", "equipo"),
-    {
-      persona: persona,
-      desde: desde,
-      hasta: hasta,
-      estado: "Pendiente",
-      fechaRegistro: new Date().toISOString()
-    }
-  );
+ await addDoc(
+  collection(db, "solicitudes"),
+  {
+    persona: persona,
+    desde: desde,
+    hasta: hasta,
+    estado: "Pendiente",
+    fechaRegistro: new Date().toISOString()
+  }
+);
 
   document.getElementById("resultado").innerHTML =
     "Vacaciones guardadas correctamente";
