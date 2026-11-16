@@ -66,63 +66,88 @@ async function guardarPrueba(){
 
 }
 
-async function cargarSolicitudes(){
+function calcularDiasLaborables(desde, hasta){
 
-  const snapshot = await getDocs(
-  collection(db, "solicitudes")
-);
+  let inicio = new Date(desde);
+  let fin = new Date(hasta);
 
-let html = "";
+  let dias = 0;
 
-let saldos = {
-  "Miembro 1": 23,
-  "Miembro 2": 23,
-  "Miembro 3": 23,
-  "Miembro 4": 23,
-  "Miembro 5": 23,
-  "Miembro 6": 23,
-  "Miembro 7": 23,
-  "Miembro 8": 23
-};
+  while(inicio <= fin){
 
-snapshot.forEach((registro) => {
+    const diaSemana = inicio.getDay();
 
-  const s = registro.data();
+    if(diaSemana !== 0 && diaSemana !== 6){
+      dias++;
+    }
 
-  const dias = calcularDiasLaborables(
-    s.desde,
-    s.hasta
-  );
+    inicio.setDate(inicio.getDate() + 1);
 
-  if(saldos[s.persona] !== undefined){
-    saldos[s.persona] -= dias;
   }
 
-  html +=
-    "<div style='margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;'>" +
-    "<strong>" + s.persona + "</strong><br>" +
-    "Desde: " + s.desde + "<br>" +
-    "Hasta: " + s.hasta + "<br>" +
-    "Estado: " + s.estado +
-    "</div>";
-
-});   // ← ESTA LÍNEA
-
-let htmlSaldos = "";
-
-for(const persona in saldos){
-
-  htmlSaldos +=
-    "<div>" +
-    persona +
-    " → " +
-    saldos[persona] +
-    " días restantes</div>";
+  return dias;
 
 }
 
-document.getElementById("saldos").innerHTML =
-  "PRUEBA SALDOS";
+async function cargarSolicitudes(){
 
-document.getElementById("listaSolicitudes").innerHTML =
-  "PRUEBA SOLICITUDES";
+  const snapshot = await getDocs(
+    collection(db, "solicitudes")
+  );
+
+  let html = "";
+
+  let saldos = {
+    "Miembro 1": 23,
+    "Miembro 2": 23,
+    "Miembro 3": 23,
+    "Miembro 4": 23,
+    "Miembro 5": 23,
+    "Miembro 6": 23,
+    "Miembro 7": 23,
+    "Miembro 8": 23
+  };
+
+  snapshot.forEach((registro) => {
+
+    const s = registro.data();
+
+    const dias = calcularDiasLaborables(
+      s.desde,
+      s.hasta
+    );
+
+    if(saldos[s.persona] !== undefined){
+      saldos[s.persona] -= dias;
+    }
+
+    html +=
+      "<div style='margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px;'>" +
+      "<strong>" + s.persona + "</strong><br>" +
+      "Desde: " + s.desde + "<br>" +
+      "Hasta: " + s.hasta + "<br>" +
+      "Estado: " + s.estado +
+      "</div>";
+
+  });
+
+  let htmlSaldos = "";
+
+  for(const persona in saldos){
+
+    htmlSaldos +=
+      "<div>" +
+      persona +
+      " → " +
+      saldos[persona] +
+      " días restantes</div>";
+
+  }
+
+  document.getElementById("saldos").innerHTML =
+    htmlSaldos;
+
+  document.getElementById("listaSolicitudes").innerHTML =
+    html || "No hay solicitudes";
+
+}
