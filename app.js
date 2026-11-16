@@ -122,7 +122,7 @@ for(const persona in saldos){
 }
 
 document.getElementById("saldos").innerHTML =
-  htmlSaldos;
+  "PRUEBA SALDOS";
 
 document.getElementById("listaSolicitudes").innerHTML =
   html || "No hay solicitudes";
