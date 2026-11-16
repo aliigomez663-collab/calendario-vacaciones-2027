@@ -180,7 +180,7 @@ async function cargarSolicitudes(){
 
 s.estado +
 
-"</strong>" +
+"</strong><br><br>" +
 "<button onclick='aprobarSolicitud(\"" + id + "\")'>Aprobar</button> " +
 "<button onclick='rechazarSolicitud(\"" + id + "\")'>Rechazar</button> " +
 "<button onclick='eliminarSolicitud(\"" + id + "\")'>Eliminar</button>" +
